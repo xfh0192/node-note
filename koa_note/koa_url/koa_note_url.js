@@ -72,40 +72,56 @@
 // ===> koa-bodyparser
 // "koa-bodyparser": "3.2.0"
 
-const Koa = require('koa');
+// const Koa = require('koa');
 
-const router = require('koa-router')();
+// const router = require('koa-router')();
 
-const app = new Koa();
+// const app = new Koa();
 
-const bodyParser = require('koa-bodyparser');  // 引入koa-bodyparser
+// const bodyParser = require('koa-bodyparser');  // 引入koa-bodyparser
 
-// 由于middleware的顺序很重要，这个koa-bodyparser必须在router之前被注册到app对象上。
-app.use(bodyParser());
+// // 由于middleware的顺序很重要，这个koa-bodyparser必须在router之前被注册到app对象上。
+// app.use(bodyParser());
 
-// log request URL:
-app.use(async (ctx, next) => {
-    console.log(`Process ${ctx.request.method} ${ctx.request}`)
-    await next();
-});
+// // log request URL:
+// app.use(async (ctx, next) => {
+//     console.log(`Process ${ctx.request.method} ${ctx.request}`)
+//     await next();
+// });
 
-// ！！！现在我们可以处理 post 请求了，写一个简单的登录表单
-router.get('/', async (ctx, next) => {
-    ctx.response.body = `<h1>Index</h1>
-                        <form action="/signin" method="post">
-                            <p>Name: <input name="name" value="koa"></p>
-                            <p>Password: <input name="password" type="password"></p>
-                            <p><input type="submit" value="Submit"></p>
-                        </form>`
-})
+// // ！！！现在我们可以处理 post 请求了，写一个简单的登录表单
+// router.get('/', async (ctx, next) => {
+//     ctx.response.body = `<h1>Index</h1>
+//                         <form action="/signin" method="post">
+//                             <p>Name: <input name="name" value="koa"></p>
+//                             <p>Password: <input name="password" type="password"></p>
+//                             <p><input type="submit" value="Submit"></p>
+//                         </form>`
+// })
 
-router.post('/isgnin', async (ctx, next) => {
-    var name = ctx.request.body.name || '';                 //未完。。
+// router.post('/signin', async (ctx, next) => {
+//     var name = ctx.request.body.name || '',
+//         password = ctx.request.body.password || '';
+//     console.log(`signin with name: ${name}, password: ${password}`);
+//     if(name == 'koa' && password == '12345'){
+//         ctx.response.body = `<h1>Welcome, ${name}!</h1>`;
+//     } else {
+//         ctx.response.body = `<h1>Login failed!</h1>
+//                             <p>
+//                                 <a href="/">Try again</a>
+//                             </p>`
+//     }
+// })
 
-})
+// // add router middleware
+// app.use(router.routes());
 
-// add router middleware
-app.use(router.routes());
+// app.listen(3000);
+// console.log('app started at port 3000....');
 
-app.listen(3000);
-console.log('app started at port 3000....');
+// 注意到我们用var name = ctx.request.body.name || ''拿到表单的name字段，如果该字段不存在，默认值设置为''。
+// 类似的，put、delete、head请求也可以由router处理。
+
+
+// ------------------- 重构 -----------------------
+// 复制一份为 koa_url2
